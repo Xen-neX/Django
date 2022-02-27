@@ -1,12 +1,771 @@
-{% extends 'blog/base.html' %}
-{% block content %}
-            {% for post in posts %}
-                <div class="post">
-                    <div class="date">
-                        <p>Опубликовано: {{ post.published_date }}</p>
-                    </div>
-                    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-                    <p>{{ post.text|linebreaksbr }}</p>
-                </div>
-            {% endfor %}
-{% endblock %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="ru">
+<HEAD>
+  <META content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <META content="IE=edge" http-equiv="X-UA-Compatible"> <!-- <![endif] -->
+  <META content="telephone=no" name="format-detection">
+  <META content="width=device-width, initial-scale=1.0" name="viewport">
+  <TITLE>Morning Espresso</TITLE>
+  <STYLE type="text/css">
+    .accent,
+    [accent] {
+      color: #ff7315;
+    }
+
+    .color,
+    [color],
+    p,
+    #cart_table td {
+      color: #585858;
+    }
+
+    .ExternalClass {
+      width: 100%;
+    }
+
+    .ExternalClass,
+    .ExternalClass p,
+    .ExternalClass span,
+    .ExternalClass font,
+    .ExternalClass td,
+    .ExternalClass div,
+    .ExternalClass b,
+    .ExternalClass br,
+    .ExternalClass img {
+      line-height: 100% !important;
+    }
+
+    /* iOS BLUE LINKS */
+    .appleBody a {
+      color: #212121;
+      text-decoration: none;
+    }
+
+    .appleFooter a {
+      color: #212121 !important;
+      text-decoration: none !important;
+    }
+
+    /* END iOS BLUE LINKS */
+    img {
+      max-width: 100%;
+      color: #ffffff;
+      text-align: center;
+      font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif!important;
+      display: block;
+    }
+
+    body {
+      margin: 0;
+      padding: 5px;
+      -webkit-text-size-adjust: 100% !important;
+      -ms-text-size-adjust: 100% !important;
+      font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
+    }
+
+    body,
+    #body_style {
+      background: #fffffe;
+    }
+
+    table td {
+      border-collapse: collapse;
+      border-spacing: 0 !important;
+    }
+
+    table tr {
+      border-collapse: collapse;
+      border-spacing: 0 !important;
+    }
+
+    table tbody {
+      border-collapse: collapse;
+      border-spacing: 0 !important;
+    }
+
+    table {
+      border-collapse: collapse;
+      border-spacing: 0 !important;
+    }
+
+    span.yshortcuts,
+    a span.yshortcuts {
+      color: #000001;
+      background-color: transparent;
+      border: none;
+    }
+
+    span.yshortcuts:hover,
+    span.yshortcuts:active,
+    span.yshortcuts:focus {
+      color: #000001;
+      background-color: transparent;
+      border: none;
+    }
+
+    img {
+      -ms-interpolation-mode: bicubic;
+    }
+
+    a[x-apple-data-detectors] {
+      color: inherit !important;
+      text-decoration: none !important;
+      font-size: inherit !important;
+      font-family: inherit !important;
+      font-weight: inherit !important;
+      line-height: inherit !important;
+    }
+
+    /**** My desktop styles ****/
+    @media only screen and (min-width: 600px) {
+      .noDesk {
+        display: none !important;
+      }
+
+      .td-padding {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+      }
+
+      .padding-container {
+        padding: 0px 15px 0px 15px !important;
+        mso-padding-alt: 0px 15px 0px 15px !important;
+      }
+
+      .mobile-column-left-padding {
+        padding: 0px 0px 0px 0px !important;
+        mso-alt-padding: 0px 0px 0px 0px !important;
+      }
+
+      .mobile-column-right-padding {
+        padding: 0px 0px 0px 0px !important;
+        mso-alt-padding: 0px 0px 0px 0px !important;
+      }
+
+      .mobile {
+        display: none !important
+      }
+    }
+
+    /**** My mobile styles ****/
+    @media only screen and (max-width: 599px) and (-webkit-min-device-pixel-ratio: 1) {
+      *[class].wrapper {
+        width: 100% !important;
+      }
+
+      *[class].container {
+        width: 100% !important;
+      }
+
+      .break {
+        display: block !important;
+        justify-content: unset !important;
+      }
+
+      .break>div {
+        width: 100% !important;
+        margin-bottom: 10px;
+      }
+
+      *[class].mobile {
+        width: 100% !important;
+        display: block !important;
+      }
+
+      *[class].image {
+        width: 100% !important;
+        height: auto;
+      }
+
+      *[class].center {
+        margin: 0 auto !important;
+        text-align: center !important;
+      }
+
+      *[class="mobileOff"] {
+        width: 0px !important;
+        display: none !important;
+      }
+
+      *[class*="mobileOn"] {
+        display: block !important;
+        max-height: none !important;
+      }
+
+      p[class="mobile-padding"] {
+        padding-left: 0px !important;
+        padding-top: 10px;
+      }
+
+      .padding-container {
+        padding: 0px 15px 0px 15px !important;
+        mso-padding-alt: 0px 15px 0px 15px !important;
+      }
+
+      .hund {
+        width: 100% !important;
+        height: auto !important;
+      }
+
+      .td-padding {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+      }
+
+      .mobile-column-left-padding {
+        padding: 18px 0px 18px 0px !important;
+        mso-alt-padding: 18px 0px 18px 0px !important;
+      }
+
+      .mobile-column-right-padding {
+        padding: 18px 0px 0px 0px !important;
+        mso-alt-padding: 18px 0px 0px 0px !important;
+      }
+
+      .stack {
+        width: 100% !important;
+      }
+
+      img {
+        width: 100% !important;
+        height: auto !important;
+      }
+
+      *[class="hide"] {
+        display: none !important
+      }
+
+      *[class="Gmail"] {
+        display: none !important
+      }
+
+      .Gmail {
+        display: none !important
+      }
+
+      .bottom-padding-fix {
+        padding: 0px 0px 18px 0px !important;
+        mso-alt-padding: 0px 0px 18px 0px;
+      }
+    }
+
+    .social,
+    .social:active {
+      opacity: 1 !important;
+      transform: scale(1);
+      transition: all .2s !important;
+    }
+
+    .social:hover {
+      opacity: 0.8 !important;
+      transform: scale(1.1);
+      transition: all .2s !important;
+    }
+
+    .button.raised {
+      transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all .2s;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    }
+
+    .button.raised {
+      font-size: 14px!important;
+      line-height: 14px;
+      font-weight: 500;
+      font-family: Helvetica, Arial, sans-serif;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 3px;
+      padding: 10px 25px;
+      border: 1px solid #17bef7;
+      display: inline-block;
+      background: #17bef7;
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+
+    table td p {
+      line-height: 130%;
+    }
+
+    .button.raised:hover {
+      box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+      transition: all .2s;
+      -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+      transition: all .2s;
+      -moz-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+      transition: all .2s;
+    }
+
+    .card-1 {
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+      -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+      -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+      transition: box-shadow .45s;
+    }
+
+    .card-1:hover {
+      box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+      -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+      -moz-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+      transition: box-shadow .45s;
+    }
+
+    .ripplelink {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      -webkit-transition: all 0.2s ease;
+      -moz-transition: all 0.2s ease;
+      -o-transition: all 0.2s ease;
+      transition: all 0.2s ease;
+      z-index: 0;
+    }
+
+    .ripplelink:hover {
+      z-index: 1000;
+    }
+
+    .ink {
+      display: block;
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 100%;
+      -webkit-transform: scale(0);
+      -moz-transform: scale(0);
+      -o-transform: scale(0);
+      transform: scale(0);
+    }
+
+    .animate {
+      -webkit-animation: ripple 0.65s linear;
+      -moz-animation: ripple 0.65s linear;
+      -ms-animation: ripple 0.65s linear;
+      -o-animation: ripple 0.65s linear;
+      animation: ripple 0.65s linear;
+    }
+
+    @-webkit-keyframes ripple {
+      100% {
+        opacity: 0;
+        -webkit-transform: scale(2.5);
+      }
+    }
+
+    @-moz-keyframes ripple {
+      100% {
+        opacity: 0;
+        -moz-transform: scale(2.5);
+      }
+    }
+
+    @-o-keyframes ripple {
+      100% {
+        opacity: 0;
+        -o-transform: scale(2.5);
+      }
+    }
+
+    @keyframes ripple {
+      100% {
+        opacity: 0;
+        transform: scale(2.5);
+      }
+    }
+    a.unsubscribe{color:#585858;}
+    /* Стили таблицы (IKSWEB) */
+    table.iksweb{text-decoration: none;border-collapse:collapse;width:100%;text-align:center;}
+    table.iksweb th{font-weight:normal;font-size:14px!important; color:#ffffff;background-color:#354251;}
+    table.iksweb td{font-size:12px!important;color:#354251;}
+    table.iksweb td,table.iksweb th{white-space:pre-wrap;padding:10px 1px;line-height:13px;vertical-align: middle;border: 1px solid #354251;}	table.iksweb tr:hover{background-color:#f9fafb}
+    table.iksweb tr:hover td{color:#354251;cursor:default;}
+    td.red{color: red!important;}
+    td.orange{color: darkgoldenrod!important;}
+    td.green{color: green!important;}
+  </STYLE>
+  <!--[if gte mso 9]>
+  <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+  </xml>
+  <![endif]-->
+</HEAD>
+
+<BODY bgcolor="#f6f6f6" style="background: rgb(246, 246, 246); margin: 0px; padding: 0px;">
+  <!--[if mso]>
+<style type='text/css'>
+  body, table, td {
+    font-fami
+    ly: Arial, Helvetica, sans-serif !important;
+  }
+</style>
+<![endif]-->
+  <DIV class="Gmail"
+    style="width: 600px !important; height: 1px !important; margin-top: -1px !important; min-width: 600px !important; max-width: 600px !important;">
+  </DIV>
+  <FONT size="2"></FONT>
+  <FONT size="2">
+    <!--[if gte mso 9]>
+  <table align='center' border='0' cellspacing='0' cellpadding='0' width='600'>
+    <tr>
+      <td align='center' valign='top' width='600' height='18'>
+  <![endif]-->
+  </FONT>
+  <TABLE bgcolor="#f6f6f6" border="0" cellpadding="0" cellspacing="0" width="100%">
+    <TBODY>
+      <TR>
+        <TD align="center" class="padding-container"
+          style="padding: 18px 0px !important; mso-padding-alt: 18px 0px 18px 0px;" valign="top" width="100%">
+          <TABLE align="center" border="0" cellpadding="0" cellspacing="0" class="wrapper" width="600">
+            <TBODY>
+              <TR>
+                <TD align="center">
+                  <TABLE border="0" cellpadding="0" cellspacing="0">
+                    <TBODY>
+                      <TR>
+                        <TD align="center" valign="top" width="100%">
+                          <TABLE align="center" bgcolor="#f6f6f6" border="0" cellpadding="0" cellspacing="0"
+                            class="wrapper" width="600">
+                            <TBODY>
+                              <TR>
+                                <TD align="center">
+                                  <TABLE align="center" border="0" cellpadding="0" cellspacing="0" class="container"
+                                    width="600">
+                                    <TBODY>
+                                      <TR>
+                                        <TD align="center" class="hund" width="200"><IMG alt="Logo" border="0"
+                                            src="https://www.epochtimes.ru/assets/uploads/2021/11/unnamed6.png"
+                                            style="color: gray; display: block;" width=""></TD>
+                                      </TR>
+                                    </TBODY>
+                                  </TABLE>
+                                </TD>
+                              </TR>
+                            </TBODY>
+                          </TABLE>
+                        </TD>
+                      </TR>
+                    </TBODY>
+                  </TABLE>
+                </TD>
+              </TR>
+            </TBODY>
+          </TABLE>
+        </TD>
+      </TR>
+      <TR>
+        <TD align="center" class="padding-container"
+          style="padding-top: 0px !important; padding-bottom: 18px !important; mso-padding-alt: 0px 0px 18px 0px;"
+          valign="top" width="100%">
+          <FONT size="2"></FONT>
+          <FONT size="2"> </FONT>
+          <TABLE align="center" border="0" cellpadding="0" cellspacing="0" class="wrapper" width="600">
+            <TBODY>
+              <TR>
+                <TD>
+                  <FONT size="2"></FONT>
+                  <FONT size="2"> </FONT>
+                  <TABLE border="0" cellpadding="0" cellspacing="0">
+                    <TBODY>
+                      <TR>
+                        <TD align="center" class="card-1"
+                          style="border-radius: 3px; border-bottom-color: rgb(212, 212, 212); border-bottom-width: 2px; border-bottom-style: solid;"
+                          valign="top" width="100%">
+                          <FONT size="2"></FONT>
+                          <FONT size="2"> </FONT>
+                          <TABLE align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0"
+                            class="wrapper" style="border-radius: 3px;" width="600">
+                            <TBODY>
+                              <TR>
+                                <TD align="center">
+                                  <FONT size="2"></FONT>
+                                  <FONT size="2">
+                                  </FONT>
+                                  <!--Таблица с контентом-->
+                                  <TABLE border="0" cellpadding="0" cellspacing="0" class="container" width="600">
+                                    <!--Тело таблицы-->
+                                    <TBODY>
+                                      <!--Строка цитаты-->
+                                      <TR>
+                                        <!--Ячейка цитаты-->
+                                        <TD  align="left" class="td-padding"
+                                          style="color: rgb(33, 33, 33) !important; line-height: 30px; padding-top: 15px; padding-right: 18px !important; padding-bottom: 0px !important; padding-left: 18px !important; font-size: 24px!important; mso-padding-alt: 18px 18px 0px 13px; mso-line-height-rule: exactly;">
+                                          <P>
+                                            <FONT color="#585858" size="4"><STRONG>Цитата
+                                                дня</STRONG></FONT>
+                                          </P>
+                                          <div style="font-size: medium!important; ">
+                                          <P align="left"><FONT color="#000000"> <STRONG><EM>«Зачастую говорят, что мотивации хватает ненадолго. Но то же самое происходит и с освежающим душем, поэтому и рекомендуют его принимать ежедневно».</EM></STRONG></FONT></P>
+                                              <P align="left"><EM><FONT size="3">Зиг Зиглар, писатель, бизнесмен и консультант по маркетингу</FONT></EM></P>
+                                        </div>
+                                            <HR id="quote">
+                                        </TD>
+                                      </TR>
+                                      <!--Строка котировок-->
+                                      <TR>
+                                        <!--Ячейка котировок-->
+                                        <TD align="left" class="td-padding"
+                                          style="color: rgb(33, 33, 33) !important; line-height: 30px; padding-top: 0px; padding-right: 18px !important; padding-bottom: 0px !important; padding-left: 18px !important; font-size: 24px!important; mso-padding-alt: 18px 18px 0px 13px; mso-line-height-rule: exactly;">
+                                          <P align="left"><STRONG>
+                                            <FONT color="#585858"
+                                            size="4">Экономика сегодня</FONT></STRONG><BR>
+                                              <FONT color="#585858"
+                                              size="2">08:00 мск</FONT></P>
+                                            <div style="font-size: medium!important; ">
+                                                <table class="iksweb">                                              
+                                                <tbody>
+                                                  <tr>
+                                                    <td><strong>ММВБ</strong></td>
+                                                    <td class="green">4 189</td>
+                                                    <td class="green">0,41%</td>
+                                                    <td><strong>Нефть</strong></td>
+                                                    <td class="red">82,3</td>
+                                                    <td class="red">-0,60%</td>
+                                                  </tr>
+                                                   <tr>
+                                                    <td><strong>Nasdaq</strong></td>
+                                                    <td class="green">15 704</td>
+                                                    <td class="green">0,52%</td>
+                                                    <td><strong>EUR/RUB</strong></td>
+                                                    <td class="green">81,9870</td>
+                                                    <td class="green">0,18%</td>
+                                                  </tr>
+                                                   <tr>
+                                                    <td><strong>Биткойн</strong></td>
+                                                    <td class="green">64 784</td>
+                                                    <td class="green">0,28%</td>
+                                                    <td><strong>Dow</strong></td>
+                                                    <td class="red">35 921</td>
+                                                    <td class="red">-0,44%</td>
+                                                  </tr>
+                                                   <tr>
+                                                    <td><strong>USD/RUB</strong></td>
+                                                    <td class="green">71,6844</td>
+                                                    <td class="green">0,51%</td>
+                                                    <td><strong>FTSE100</strong></td>
+                                                    <td class="green">7 384</td>
+                                                    <td class="green">0,60%</td>
+                                                  </tr>
+                                                   <tr>
+                                                    <td><strong>РТС</strong></td>
+                                                    <td class="red">1 854</td>
+                                                    <td class="red">-0,00%</td>
+                                                    <td><strong>Золото</strong></td>
+                                                    <td class="green">1 856</td>
+                                                    <td class="green">0,43%</td>
+                                                  </tr>
+                                                   <tr>
+                                                    <td><strong>S&amp;P500</strong></td>
+                                                    <td class="green">4 649</td>
+                                                    <td class="green">0,04%</td>
+                                                    <td><strong>EUR/USD</strong></td>
+                                                    <td class="red">1,1438</td>
+                                                    <td class="red">-0,32%</td>
+                                                  </tr>
+                                                </tbody>
+                                                </table>                                            
+                                            </div>
+                                            <p></p>
+                                          <HR id="economics">
+                                        </TD>
+                                      </TR>
+                                      <!--Строка анекдота-->
+                                      <TR>
+                                         <!--Ячейка анектода-1-->
+                                        <TD align="left" class="td-padding"
+                                          style="color: rgb(33, 33, 33) !important; line-height: 30px; padding-top: 0px; padding-right: 18px !important; padding-bottom: 0px !important; padding-left: 18px !important; font-size: 24px!important; mso-padding-alt: 18px 18px 0px 13px; mso-line-height-rule: exactly;">
+                                          <P align="left"><STRONG>
+                                            <FONT color="#585858"
+                                            size="4">Юмор: Ха — ха — ха</FONT></STRONG></P>
+                                            <div style="font-size: medium!important; ">
+                                              <P align="left">Мужик приходит к тату-мастеру и говорит:</P>
+                                              <P align="left">— А набей мне на всю спину танк.</P>
+                                                <P align="left">— Да не вопрос, ложись.</P>
+                                                <P align="left">Проходит 15 минут, тату-мастер говорит:</P>
+                                                   <P align="left">— Ну всё, готово.</P>
+                                              <P align="left">— А почему я встать не могу?</P>
+                                                <P align="left">— А что ты хотел? 46 тонн!</P>
+                                          </div>
+                                            <HR id="smile">
+                                        </TD>
+                                      </TR>
+                                      <!--Строка новостей-1-->
+                                      <TR>
+                                        <!--Ячейка новостей-1-->
+                                        <TD align="left" class="td-padding"
+                                          style="color: rgb(33, 33, 33) !important; line-height: 30px; padding-top: 0px; padding-right: 18px !important; padding-bottom: 0px !important; padding-left: 18px !important; font-size: 24px!important; mso-padding-alt: 18px 18px 0px 13px; mso-line-height-rule: exactly;">
+                                          <P align="left"><STRONG>
+                                            <FONT color="#000000"
+                                            size="4">Интересные статьи и
+                                            новости</FONT></STRONG></P>
+                                            <P align="center"><STRONG><IMG align="middle" style="width: 100%;"
+                                              alt="" src="https://www.epochtimes.ru/assets/uploads/2021/11/pexels-burst-374074-700x450.jpg"
+                                              border="0" hspace="0"></STRONG></P>
+                                            <div style="font-size: medium!important; ">
+                                            <p align="left">
+                                              <STRONG><FONT  size="4">Экономика: Самозанятые стали зарабатывать в 4 раза больше</FONT></STRONG></p>
+                                            <P align="left">С начала нынешнего года число самозанятых в России увеличилось в 2,4 раза, а обороты платежей за их работу выросли почти вчетверо. Среди них самый большой средний чек — у продавцов стройматериалов, а по общей выручке лидируют педагоги и консультанты. По данным исследования, за последние десять месяцев оборот платежей самозанятым увеличился в 3,9 раза, а число оплаченных заказов — в 3,6 раза. При этом число клиентов у самозанятых увеличилось в 3,3 раза по сравнению с прошлым годом. А средний чек на текущий момент составляет 1235 рублей — на 8% больше прошлогоднего показателя.</P>
+                                            </div>
+                                            <HR id="news1">
+                                        </TD>
+                                      </TR>
+                                      <!--Строка новостей-2-->
+                                      <TR>
+                                        <!--Ячейка новостей-2-->
+                                        <TD align="left" class="td-padding"
+                                          style="color: rgb(33, 33, 33) !important; line-height: 30px; padding-top: 0px; padding-right: 18px !important; padding-bottom: 0px !important; padding-left: 18px !important; font-size: 24px!important; mso-padding-alt: 18px 18px 0px 13px; mso-line-height-rule: exactly;">
+                                            <P align="center"><STRONG><IMG align="middle" style="width: 100%;"
+                                              alt="" src="https://www.epochtimes.ru/assets/uploads/2021/11/GettyImages-840901140-800x450.jpg"
+                                              border="0" hspace="0"></STRONG></P>
+                                            <div style="font-size: medium!important; ">
+                                            <P align="left"><STRONG><FONT  size="4">Бизнес: Миллионеры прячут доходы в Люксембурге</FONT></STRONG></P>
+                                              <P align="left">Самые богатые люди мира, например, Бернар Арно из LVMH и Омансио Ортера из Zara разместили свои активы на сумму около $30 млрд в крошечном Люксембурге. А этом крошечном государстве поместилось всё: от самолётов и вертолётов до виноградников и роскошных отелей.</P>
+                                            </div>
+                                            <!--Переход на сайт-->
+                                            <a href="https://www.epochtimes.ru/t/morning-espresso/" style="text-decoration:none;">
+                                            <span style="display:block; padding:48px 20px 18px;margin-top:20px;text-align:center;color:#555555;background-color:#fff6ec;">
+                                              <span style="display:block; font-size:24px;"><strong>Читайте эти и другие новости на нашем сайте в полном формате</strong></span>
+                                              <span style="display:block; width:180px;height:40px;margin:28px auto;line-height:40px;text-align:center;font-size:18px;color:#fff;background-color:#bf6315;border-radius:4px;"><strong>Перейти на сайт</strong></span>
+                                            </span></a>
+                                            <p></p>
+                                            <HR id="news2">
+                                        </TD>
+                                      </TR>
+                                      <!--Строка дня рождения-->
+                                      <TR>
+                                        <!--Ячейка дня рождения-->
+                                        <TD align="left" class="td-padding"
+                                          style="color: rgb(33, 33, 33) !important; line-height: 30px; padding-top: 0px; padding-right: 18px !important; padding-bottom: 0px !important; padding-left: 18px !important; font-size: 24px!important; mso-padding-alt: 18px 18px 0px 13px; mso-line-height-rule: exactly;">
+                                          <P align="left"><STRONG>
+                                            <FONT color="#585858"
+                                            size="4">Рождение звезды</FONT></STRONG></P>
+                                          <div style="font-size: medium!important; ">
+                                          <P align="left"><STRONG>12
+                                            ноября</STRONG> родился Александр Бородин — русский композитор и ученый-химик.</P>
+                                            <P align="left"><EM><STRONG>«Всем, чего мы не имеем, мы обязаны только себе»,</STRONG></EM> —  Александр Порфирьевич Бородин</P>
+                                            <!-- <P></P>
+                                            <P align="left"><EM><FONT size="3">Курт Воннегут</FONT></EM></P> -->
+                                          </div>
+                                            <HR id="birthday">
+                                        </TD>
+                                      </TR>
+                                      <!--Строка события-->
+                                      <TR>
+                                        <!--Ячейка события-->
+                                        <TD align="left" class="td-padding"
+                                          style="color: rgb(33, 33, 33) !important; line-height: 30px; padding-top: 0px; padding-right: 18px !important; padding-bottom: 0px !important; padding-left: 18px !important; font-size: 24px!important; mso-padding-alt: 18px 18px 0px 13px; mso-line-height-rule: exactly;">
+                                          <P align="left"><STRONG>
+                                            <FONT color="#585858"
+                                            size="4">Событие дня</FONT></STRONG></P>
+                                          <div style="font-size: medium!important; ">
+                                            <P align="left"><STRONG>12 ноября</STRONG> ежегодно отмечается Всемирный день борьбы с пневмонией (World Pneumonia Day).</P>
+                                              <P align="left">Пневмония — инфекционное заболевание лёгких, чаще всего оно поражает детей, пожилых людей и людей с ослабленной иммунной системой. Пневмонии могут вызывать различные виды микроорганизмов.</P>
+                                              <P align="left">Этот международный день появился в календаре по инициативе Глобальной коалиции против детской пневмонии. Коалиция стремится привлечь к проблеме пневмонии внимание государственных деятелей, специалистов здравоохранения и потенциальных доноров.</P>
+                                              <P align="left">Пневмония распространена повсеместно, но больше всего от неё страдают дети в Южной Азии и в Африке. Впрочем, эту болезнь можно предупредить с помощью довольно простых мер, например, иммунизации и хорошего питания.</P>
+                                            </div>
+                                            <HR id="event">
+                                        </TD>
+                                      </TR>
+                                      <!--Строка отписки-->
+                                      <TR>
+                                        <!--Ячейка отписки-->
+                                        <TD align="center" class="td-padding"
+                                          style="color: rgb(33, 33, 33) !important; line-height: 30px; padding-top: 15px; padding-right: 18px !important; padding-bottom: 20px !important; padding-left: 18px !important; font-size: 24px!important; mso-padding-alt: 18px 18px 0px 13px; mso-line-height-rule: exactly;">
+                                          <div style="font-size: medium!important; ">
+                                          <P>
+                                            <FONT size="2">Вы получили это письмо, так как являетесь подписчиком или зарегистрированным пользователем сайта The Epoch Times. </FONT>
+                                          </P>
+                                          
+                                              <P align="center"><a class="unsubscribe" href="mailto:%_SENDER_EMAIL_%?subject=Отписаться">
+                                                  <FONT size="2">Отписаться</FONT>
+                                                </A>
+                                                <FONT size="2">
+                                                </FONT>
+                                              </P>
+                                        </div>
+                                        </TD>
+                                      </TR>
+                                    </TBODY>
+                                  </TABLE>
+                                  <FONT size="2"></FONT>
+                                </TD>
+                              </TR>
+                            </TBODY>
+                          </TABLE>
+                          <FONT size="2"></FONT>
+                        </TD>
+                      </TR>
+                    </TBODY>
+                  </TABLE>
+                  <FONT size="2"></FONT>
+                </TD>
+              </TR>
+            </TBODY>
+          </TABLE>
+          <FONT size="2"></FONT>
+        </TD>
+      </TR>
+      <TR>
+        <TD height="18"></TD>
+      </TR>
+      <!--[if gte mso 9]>
+  </td>
+  </tr>
+  </table>
+  <![endif]-->
+      <TR>
+        <TD align="center" class="padding-container" valign="top" width="100%">
+          <TABLE align="center" border="0" cellpadding="0" cellspacing="0" class="wrapper" width="600">
+            <TBODY>
+              <TR>
+                <TD align="center" valign="top" width="100%">
+                  <TABLE align="center" bgcolor="#f6f6f6" border="0" cellpadding="0" cellspacing="0" class="wrapper"
+                    width="600">
+                    <TBODY>
+                      <TR>
+                        <TD align="center">
+                          <TABLE border="0" cellpadding="0" cellspacing="0" class="container" width="600">
+                            <TBODY>
+
+                              <TR>
+                                <TD align="center" class="td-padding"
+                                  style="color: rgb(33, 33, 33) !important; line-height: 24px; padding-top: 0px; padding-right: 0px !important; padding-bottom: 0px !important; padding-left: 0px !important; mso-padding-alt: 0px 0px 0px 0px; mso-line-height-rule: exactly;">
+                                  ©
+                                  2021 | Утренний эспрессо
+                                </TD>
+                              </TR>
+                            </TBODY>
+                          </TABLE>
+                        </TD>
+                      </TR>
+                    </TBODY>
+                  </TABLE>
+                </TD>
+              </TR>
+            </TBODY>
+          </TABLE>
+        </TD>
+      </TR>
+      <!--[if gte mso 9]>
+  <table align='center' border='0' cellspacing='0' cellpadding='0' width='600'>
+    <tr>
+      <td align='center' valign='top' width='600' height='36'>
+  <![endif]-->
+      <TR>
+        <TD height="36"></TD>
+      </TR>
+      <!--[if gte mso 9]>
+  </td>
+  </tr>
+  </table>
+  <![endif]-->
+    </TBODY>
+  </TABLE>
+  <DIV style="font: 15px/0 courier; display: none; white-space: nowrap; font-size-adjust: none; font-stretch: normal;">
+  </DIV>
+</BODY>
+</HTML>
